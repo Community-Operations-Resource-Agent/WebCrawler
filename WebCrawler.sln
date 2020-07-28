@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.51
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerFunctions", "CrawlerFunctions\CrawlerFunctions.csproj", "{6FC27DD2-9371-40D4-A07A-7FDBC1B599FB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawl-foodpantries.org", "Crawl-foodpantries.org\Crawl-foodpantries.org.csproj", "{D2E0794B-EC6E-465C-9FA5-A5433A7CAADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlerFunctions", "CrawlerFunctions\CrawlerFunctions.csproj", "{6FC27DD2-9371-40D4-A07A-7FDBC1B599FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{6FC27DD2-9371-40D4-A07A-7FDBC1B599FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FC27DD2-9371-40D4-A07A-7FDBC1B599FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FC27DD2-9371-40D4-A07A-7FDBC1B599FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2E0794B-EC6E-465C-9FA5-A5433A7CAADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2E0794B-EC6E-465C-9FA5-A5433A7CAADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2E0794B-EC6E-465C-9FA5-A5433A7CAADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2E0794B-EC6E-465C-9FA5-A5433A7CAADC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

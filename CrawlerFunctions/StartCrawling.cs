@@ -1,19 +1,40 @@
 using System;
+using CrawlerFunctions.Crawler;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace CrawlerFunctions
 {
     public static class StartCrawling
     {
-        [FunctionName("Start Crawling")]
-        public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
+        [FunctionName("StartCrawling")]
+        public static void Run([TimerTrigger("0 0 * * * *"
+#if DEBUG
+            , RunOnStartup = true
+#endif            
+            )]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            // Check CosmosDB source, to find all the sites we need to crawl
-            // Then queue up for each of the crawlers for sites to run on the "sites-to-crawl" queue
+            // Create the Chrome driver
+            var options = new ChromeOptions()
+            {
+                AcceptInsecureCertificates = true,
+                PageLoadStrategy = PageLoadStrategy.Normal
+            };
+
+            options.AddArgument("headless");
+            var driver = new ChromeDriver(options);
+
+            // Kick off the food pantry crawling
+            var data = FoodPantrySiteCrawler.CrawlFoodPantryWebSite(driver);
+
+            // Kick off the Shelter crawling
+            var data2 = ShelterCrawler.CrawlShelterWebSite("", driver);
+
         }
     }
 }
