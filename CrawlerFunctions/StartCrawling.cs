@@ -19,12 +19,16 @@ namespace CrawlerFunctions
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
+
             // Create the Chrome driver
             var options = new ChromeOptions()
             {
                 AcceptInsecureCertificates = true,
                 PageLoadStrategy = PageLoadStrategy.Normal
             };
+
+            var currentDir = Environment.CurrentDirectory;
+            System.Environment.SetEnvironmentVariable("PATH", currentDir, EnvironmentVariableTarget.Process);
 
             options.AddArgument("headless");
             var driver = new ChromeDriver(options);
