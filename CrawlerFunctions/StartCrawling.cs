@@ -38,7 +38,7 @@ namespace CrawlerFunctions
             var driver = new ChromeDriver(options);
 
             //TO-DO add in configuration and setup client
-            IDocumentClient client = new DocumentClient(new Uri("https://crawlerdata.documents.azure.com:443/"), "key");
+            //IDocumentClient client = new DocumentClient(new Uri("https://crawlerdata.documents.azure.com:443/"), "key");
             IDatastoreProvider dbProvider = null;
 
             // Kick off the food pantry crawling
