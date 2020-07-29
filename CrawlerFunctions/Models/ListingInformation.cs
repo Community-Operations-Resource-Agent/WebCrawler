@@ -1,4 +1,6 @@
-﻿namespace CrawlerFunctions.Models
+﻿using System;
+
+namespace CrawlerFunctions.Models
 {
     public class ListingInformation
     {
@@ -15,6 +17,11 @@
         public ListingInformation()
         {
 
+        }
+
+        public bool IsEmpty()
+        {
+            return String.IsNullOrEmpty(Name) && String.IsNullOrEmpty(Url);
         }
 
     }
