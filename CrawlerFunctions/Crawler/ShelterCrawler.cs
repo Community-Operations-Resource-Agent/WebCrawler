@@ -1,4 +1,7 @@
-﻿namespace CrawlerFunctions.Crawler
+﻿using CrawlerFunctions.Providers;
+using Microsoft.Extensions.Logging;
+
+namespace CrawlerFunctions.Crawler
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -12,28 +15,28 @@
     /// </summary>
     public static class ShelterCrawler
     {
-        public static IList<ListingInformation> CrawlShelterWebSite(String url, ChromeDriver driver)
+        public static void CrawlShelterWebSite(ChromeDriver driver, IDatastoreProvider dbProvider,  ILogger log)
         {
-            IList<ListingInformation> stateList = new List<ListingInformation>();
-            driver.Navigate().GoToUrl(@url);
-
-            IWebElement tableElement = driver.FindElement(By.TagName("table"));
-            IList<IWebElement> tableRow = tableElement.FindElements(By.TagName("tr"));
-            foreach (IWebElement row in tableRow)
+            foreach (var crawler in GetShelterCrawlers(driver, dbProvider, log))
             {
-                IList<IWebElement> rowTD = row.FindElements(By.XPath("//td/a"));
-                foreach (IWebElement td in rowTD)
-                {
-                    ListingInformation state = new ListingInformation
-                    {
-                        Name = td.Text,
-                        Url = td.GetAttribute("href")
-                    };
-                    stateList.Add(state);
-                }
-
+                crawler.Crawl();
             }
-            return stateList;
         }
+
+        /// <summary>
+        /// Returns a list of shelter crawler
+        /// for different websites
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <returns></returns>
+        private static List<IShelterCrawler> GetShelterCrawlers(ChromeDriver driver, IDatastoreProvider dbProvider, ILogger log)
+        {
+            List<IShelterCrawler> crawlers = new List<IShelterCrawler>
+            {
+                new HomelessShelterDirectorySiteCrawler(driver,  dbProvider, log)
+            };
+            return crawlers;
+        }
+
     }
 }
