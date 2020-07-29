@@ -6,8 +6,7 @@ namespace CrawlerFunctions
 {
     public class FoodPantry
     {
-        public string State;
-        public string City;
+        public FoodPantryCity City;
         public string Name;
         public string Url;
         public string Info;

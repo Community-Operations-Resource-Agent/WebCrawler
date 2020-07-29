@@ -9,7 +9,7 @@ namespace CrawlerFunctions
 {
     public static class FoodPantryStateCrawler
     {
-        public static async Task CrawlFoodPantrySateSite(ChromeDriver driver, FoodPantryState state)
+        public static async Task CrawlFoodPantrySateSiteAsync(ChromeDriver driver, FoodPantryState state)
         {
             IList<FoodPantryCity> cityList = new List<FoodPantryCity>();
 
@@ -26,6 +26,7 @@ namespace CrawlerFunctions
                     FoodPantryCity city = new FoodPantryCity();
                     city.Name = td.Text;
                     city.Url = td.GetAttribute("href");
+                    city.State = state;
                     cityList.Add(city);
                 }
 
