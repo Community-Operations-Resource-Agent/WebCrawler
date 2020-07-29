@@ -1,6 +1,10 @@
 using System;
 using CrawlerFunctions.Common;
+using System.Collections.Generic;
 using CrawlerFunctions.Crawler;
+using CrawlerFunctions.Providers;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
@@ -37,11 +41,24 @@ namespace CrawlerFunctions
             options.AddArgument("headless");
             var driver = new ChromeDriver(options);
 
+            //TO-DO add in configuration and setup client
+            //IDocumentClient client = new DocumentClient(new Uri("https://crawlerdata.documents.azure.com:443/"), "key");
+            IDatastoreProvider dbProvider = null;
+
             // Kick off the food pantry crawling
             var data = FoodPantrySiteCrawler.CrawlFoodPantryWebSiteAsync(driver, log);
 
             // Kick off the Shelter crawling
-            var data2 = ShelterCrawler.CrawlShelterWebSite("", driver);
+            try
+            {
+                ShelterCrawler.CrawlShelterWebSite(driver, dbProvider, log);
+               
+            }
+            catch(Exception ex)
+            {
+                log.LogError(ex, "Exception while crawling shelters");
+            }
+           
 
             return;
         }
