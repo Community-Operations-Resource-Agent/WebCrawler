@@ -77,7 +77,7 @@ namespace CrawlerFunctions.Common
             }
             return null;
         }
-        public static async Task AddItemAsync<T>(
+        public static async Task AddItemToContainerAsync<T>(
             T item,
             Container container,
             string id,
@@ -94,6 +94,58 @@ namespace CrawlerFunctions.Common
             {
                 // Create an item in the container representing the Wakefield family. Note we provide the value of the partition key for this item, which is "Wakefield"
                 ItemResponse<T> addEntryResponse = await container.CreateItemAsync<T>(item, new PartitionKey(partitiokey));
+            }
+        }
+        public static async Task QueryContainerItemsAsync<T>(Container container, string query, ILogger log)
+        {
+            log.LogInformation("Running query: {0}\n", query);
+
+            QueryDefinition queryDefinition = new QueryDefinition(query);
+            FeedIterator<T> queryResultSetIterator = container.GetItemQueryIterator<T>(queryDefinition);
+
+            List<T> entries = new List<T>();
+
+            while (queryResultSetIterator.HasMoreResults)
+            {
+                FeedResponse<T> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+                foreach (T entry in currentResultSet)
+                {
+                    entries.Add(entry);
+                    log.LogInformation("\tRead {0}\n", entry);
+                }
+            }
+        }
+
+        public static async Task ReplaceContainerItemAsync<T>(T item, Container container, string id, string partitionkey)
+        {
+            ItemResponse<T> readResponse = await container.ReadItemAsync<T>(id, new PartitionKey(partitionkey));
+
+            // replace the item with the updated content
+            readResponse = await container.ReplaceItemAsync<T>(item, id, new PartitionKey(partitionkey));
+            Console.WriteLine("Updated Family [{0},{1}].\n \tBody is now: {2}\n", id, partitionkey, readResponse);
+        }
+        public static async Task DeleteCaontainerItemAsync<T>(T item, Container container, string id, string partitionkey, ILogger log)
+        {
+
+            // Delete an item. Note we must provide the partition key value and id of the item to delete
+            ItemResponse<T> wakefieldFamilyResponse = await container.DeleteItemAsync<T>(id, new PartitionKey(partitionkey));
+            log.LogInformation("Deleted Family [{0},{1}]\n", partitionkey, id);
+        }
+
+        public static async Task DeleteDatabaseAndCleanupAsync(Database database, ILogger log)
+        {
+            if (database != null)
+            {
+                DatabaseResponse databaseResourceResponse = await database.DeleteAsync();
+                // Also valid: await this.cosmosClient.Databases["FamilyDatabase"].DeleteAsync();
+
+                log.LogInformation("Deleted Database: {0}\n", databaseId);
+
+                if (CrawlerClient != null)
+                {
+                    //Dispose of CosmosClient
+                    CrawlerClient.Dispose();
+                }
             }
         }
     }
