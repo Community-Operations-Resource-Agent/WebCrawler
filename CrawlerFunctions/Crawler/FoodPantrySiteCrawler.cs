@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.Framework;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -8,15 +7,27 @@ using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos;
 
 namespace CrawlerFunctions
 {
     public static class FoodPantrySiteCrawler
     {
-        public static async Task<IList<FoodPantryState>> CrawlFoodPantryWebSite(ChromeDriver driver)
+        private static string FoodPantrySiteURL = @"https://www.foodpantries.org/";
+        private static string FoodPantryContainerId = @"FoodPantryContainer";
+        public static Container FoodPantryContainer;
+        public static async Task<IList<FoodPantryState>> CrawlFoodPantryWebSiteAsync(ChromeDriver driver, ILogger log)
         {
+            //Create FoodPantry Container
+            FoodPantryContainer = await Common.CosmosDBUtils.CreateCosmosContainerAsync(FoodPantryContainerId, log);
+            if (FoodPantryContainer != null)
+            {
+                log.LogInformation("Successfully created FoodPantryContainer");
+            }
+
             IList<FoodPantryState> stateList = new List<FoodPantryState>();
-            driver.Navigate().GoToUrl(@"https://www.foodpantries.org/");
+           
+            driver.Navigate().GoToUrl(FoodPantrySiteURL);
 
             IWebElement tableElement = driver.FindElement(By.TagName("table"));
             IList<IWebElement> tableRow = tableElement.FindElements(By.TagName("tr"));

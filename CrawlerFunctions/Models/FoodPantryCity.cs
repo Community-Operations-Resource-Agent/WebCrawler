@@ -8,10 +8,13 @@ namespace CrawlerFunctions
     {
         private string _name;
         private string _url;
-        private string _stateName;
+        private FoodPantryState _state;
         private IList<FoodPantry> _pantries;
-        public FoodPantryCity() { }
-        public FoodPantryCity(string name) => Name = name;
+        public FoodPantryCity()
+        {
+
+        }
+        public FoodPantryCity(string name) => name = name;
 
         public string Name
         {
@@ -23,10 +26,10 @@ namespace CrawlerFunctions
             get => _url;
             set => _url = value;
         }
-        public string StateName
-        {
-            get => _stateName;
-            set => _stateName = value;
+        public FoodPantryState State
+        { 
+            get => _state;
+            set => _state = value;
         }
         public IList<FoodPantry> Pantries
         {

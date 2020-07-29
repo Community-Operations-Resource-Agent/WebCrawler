@@ -22,13 +22,13 @@ namespace CrawlerFunctions
                 string html = block.GetAttribute("innerHTML");
                 if (html.Contains(@"postalCode") && html.Contains(city.Name))
                 {
-                    city.Pantries.Add(ProcessFoodPantry(html, city.Name));
+                    city.Pantries.Add(ProcessFoodPantry(html, city));
                 }
 
             }
         }
 
-        public static FoodPantry ProcessFoodPantry(string html, string city)
+        public static FoodPantry ProcessFoodPantry(string html, FoodPantryCity city)
         {
             FoodPantry pantry = new FoodPantry();
             string processhtml = html.Replace(System.Environment.NewLine, @"");
@@ -36,7 +36,7 @@ namespace CrawlerFunctions
             foreach (string part in parts)
             {
                 string[] pair = part.Split(@":");
-                if (pair[0].Contains("name"))
+                if (pair[0].Contains(city.Name))
                     pantry.Name = pair[1];
             }
             return pantry;
