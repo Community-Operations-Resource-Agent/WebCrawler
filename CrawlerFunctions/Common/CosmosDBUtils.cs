@@ -14,7 +14,7 @@ namespace CrawlerFunctions.Common
     public static class CosmosDBUtils
     {
         private static readonly string EndpointUri = @"https://crawlerdata.documents.azure.com:443/";
-        private static readonly string PrimaryKey = @"wzqHc8ZcxGMPZLQmxjoz3oKVYJo08rEPOfcsjgYj4yHS0jj9koQtJlk5ZR9Q089yGMrGndHEEefPyrkwnBf79w==";
+        private static readonly string PrimaryKey = "";
 
         private static string databaseId = "CrawlerData";
 
