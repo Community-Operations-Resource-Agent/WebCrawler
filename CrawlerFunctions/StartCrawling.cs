@@ -25,6 +25,10 @@ namespace CrawlerFunctions
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
+            var currentDir = Environment.CurrentDirectory;
+            System.Environment.SetEnvironmentVariable("PATH", currentDir, EnvironmentVariableTarget.Process);
+
+            AppSettings.LoadAppSettings(currentDir);
             // Create Cosmos Database
             await CosmosDBUtils.CreateCrawlerDatabaseAsync(log);
 
@@ -35,8 +39,6 @@ namespace CrawlerFunctions
                 PageLoadStrategy = PageLoadStrategy.Normal
             };
 
-            var currentDir = Environment.CurrentDirectory;
-            System.Environment.SetEnvironmentVariable("PATH", currentDir, EnvironmentVariableTarget.Process);
 
             options.AddArgument("headless");
             var driver = new ChromeDriver(options);
