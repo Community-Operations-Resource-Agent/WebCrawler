@@ -13,9 +13,6 @@ namespace CrawlerFunctions.Common
 {
     public static class CosmosDBUtils
     {
-        private static readonly string EndpointUri = @"https://crawlerdata.documents.azure.com:443/";
-        private static readonly string PrimaryKey = "";
-
         private static string databaseId = "CrawlerData";
 
         public static Database CrawlerDB;
@@ -26,7 +23,7 @@ namespace CrawlerFunctions.Common
             try
             {
                 // Create a new instance of the Cosmos Client
-                CrawlerClient = new CosmosClient(EndpointUri, PrimaryKey, new CosmosClientOptions()
+                CrawlerClient = new CosmosClient(AppSettings.EndpointUrl, AppSettings.PrimaryKey, new CosmosClientOptions()
                 {
                     ConnectionMode = ConnectionMode.Gateway
                 });

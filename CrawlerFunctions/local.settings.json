@@ -1,7 +1,11 @@
 {
-    "IsEncrypted": false,
-    "Values": {
-        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
-    }
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+  },
+  "CosmosDB": {
+    "EndpointUrl": "https://crawlerdata.documents.azure.com:443/",
+    "PrimaryKey": "wzqHc8ZcxGMPZLQmxjoz3oKVYJo08rEPOfcsjgYj4yHS0jj9koQtJlk5ZR9Q089yGMrGndHEEefPyrkwnBf79w=="
+  }
 }
