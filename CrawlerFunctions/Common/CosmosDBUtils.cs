@@ -53,7 +53,7 @@ namespace CrawlerFunctions.Common
             }
         }
 
-        public static async Task<Container> CreateCosmosContainerAsync(string containerId, ILogger log)
+        public static async Task<Container> CreateCosmosContainerAsync(string containerId, string partitionkey, ILogger log)
         {
             if (CrawlerClient == null)
             {
@@ -66,7 +66,7 @@ namespace CrawlerFunctions.Common
             try
             {
                 log.LogInformation("Creating Container " + containerId);
-                return await CrawlerDB.CreateContainerIfNotExistsAsync(containerId, "/partitiokey");
+                return await CrawlerDB.CreateContainerIfNotExistsAsync(containerId, partitionkey);
             }
             catch (Exception e)
             {
@@ -83,14 +83,18 @@ namespace CrawlerFunctions.Common
         {
             try
             {
-                // Read the item to see if it exists
-                ItemResponse<T> addEntryResponse = await container.ReadItemAsync<T>(id, new PartitionKey(partitiokey));
+                await container.CreateItemAsync<T>(item);
+                log.LogInformation("Successfully added item with id: {0} \n", id);
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
+            {
                 log.LogInformation("Item in database with id: {0} already exists\n", id);
             }
-            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            catch (CosmosException ex)
             {
-                // Create an item in the container representing the Wakefield family. Note we provide the value of the partition key for this item, which is "Wakefield"
-                ItemResponse<T> addEntryResponse = await container.CreateItemAsync<T>(item, new PartitionKey(partitiokey));
+                log.LogError("Failed to add item in database with id: {0} \n", id);
+                log.LogError(ex.Message);
+
             }
         }
         public static async Task QueryContainerItemsAsync<T>(Container container, string query, ILogger log)
