@@ -25,7 +25,12 @@ namespace CrawlerFunctions
         }
         public IList<FoodPantryCity> Cities
         {
-            get => _cities;
+            get
+            {
+                if (_cities == null)
+                    _cities = new List<FoodPantryCity>();
+                return _cities;
+            }
             set => _cities = value;
         }
 

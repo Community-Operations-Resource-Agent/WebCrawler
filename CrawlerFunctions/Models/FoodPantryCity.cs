@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace CrawlerFunctions
 {
     public class FoodPantryCity
     {
-        private string _name;
+        private string _cityname;
         private string _url;
         private FoodPantryState _state;
         private IList<FoodPantry> _pantries;
         public FoodPantryCity()
         {
-
         }
-        public FoodPantryCity(string name) => name = name;
+        public FoodPantryCity(string cityname) => CityName = cityname;
 
-        public string Name
+        [JsonProperty(PropertyName = "partition")]
+        public string CityName
         {
-            get => _name;
-            set => _name = value;
+            get => _cityname;
+            set => _cityname = value;
         }
         public string Url
         {
@@ -33,7 +34,12 @@ namespace CrawlerFunctions
         }
         public IList<FoodPantry> Pantries
         {
-            get => _pantries;
+            get
+            {
+                if (_pantries == null)
+                    _pantries = new List<FoodPantry>();
+                return _pantries;
+            }
             set => _pantries = value;
         }
     }

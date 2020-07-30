@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Azure.Cosmos;
+using Newtonsoft.Json;
 
 namespace CrawlerFunctions
 {
     public class FoodPantry
     {
-        public FoodPantryCity City;
-        public string Name;
+        [JsonProperty(PropertyName = "id")]
+        public string PantryName;
         public string Url;
-        public string Info;
-        public string OpenTime;
-        public string Address;
+        public string Descritpion;
+        public string PostalCode;
+        public string StreetAddress;
+        public string Phone;
+        public FoodPantryCity City;
     }
 }

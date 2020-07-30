@@ -17,7 +17,7 @@ namespace CrawlerFunctions
     public static class StartCrawling
     {
         [FunctionName("StartCrawling")]
-        public static async Task Run([TimerTrigger("0 0 * * * *"
+        public static async Task Run([TimerTrigger("0 */1 * * * *"
 #if DEBUG
             , RunOnStartup = true
 #endif            
@@ -28,7 +28,9 @@ namespace CrawlerFunctions
             var currentDir = Environment.CurrentDirectory;
             System.Environment.SetEnvironmentVariable("PATH", currentDir, EnvironmentVariableTarget.Process);
 
+            // Load configuration settings
             AppSettings.LoadAppSettings(currentDir);
+
             // Create Cosmos Database
             await CosmosDBUtils.CreateCrawlerDatabaseAsync(log);
 
@@ -38,8 +40,6 @@ namespace CrawlerFunctions
                 AcceptInsecureCertificates = true,
                 PageLoadStrategy = PageLoadStrategy.Normal
             };
-
-
             options.AddArgument("headless");
             var driver = new ChromeDriver(options);
 
@@ -47,20 +47,22 @@ namespace CrawlerFunctions
             //IDocumentClient client = new DocumentClient(new Uri("https://crawlerdata.documents.azure.com:443/"), "key");
             IDatastoreProvider dbProvider = null;
 
+            //FoodPantrySiteCrawler.Test(log);
+
             // Kick off the food pantry crawling
-            var data = FoodPantrySiteCrawler.CrawlFoodPantryWebSiteAsync(driver, log);
+            FoodPantrySiteCrawler.CrawlFoodPantryWebSiteAsync(driver, log);
 
             // Kick off the Shelter crawling
             try
             {
                 ShelterCrawler.CrawlShelterWebSite(driver, dbProvider, log);
-               
+
             }
             catch(Exception ex)
             {
                 log.LogError(ex, "Exception while crawling shelters");
-            }
-           
+            }  
+
 
             return;
         }
