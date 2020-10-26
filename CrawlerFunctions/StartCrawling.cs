@@ -1,70 +1,27 @@
 using System;
-using CrawlerFunctions.Common;
-using System.Collections.Generic;
-using CrawlerFunctions.Crawler;
-using CrawlerFunctions.Providers;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using CrawlerFunctions.Crawler;
 
 namespace CrawlerFunctions
 {
-    public static class StartCrawling
+    public class StartCrawling
     {
         [FunctionName("StartCrawling")]
-        public static async Task Run([TimerTrigger("0 */1 * * * *"
+        // Cron job runs once per day at 1am UTC - 0 0 1 * * *
+        public async Task Run([TimerTrigger("0 0 0 * * *"
 #if DEBUG
             , RunOnStartup = true
 #endif            
-            )]TimerInfo myTimer, ILogger log)
+            )]TimerInfo myTimer,
+            [Queue("Crawl-Site"), StorageAccount("AzureWebJobsStorage")] ICollector<SiteConfiguration> crawlSiteQueue,
+            ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.LogInformation($"Function to start crawling initiated at: {DateTime.Now}");
 
-            var currentDir = Environment.CurrentDirectory;
-            System.Environment.SetEnvironmentVariable("PATH", currentDir, EnvironmentVariableTarget.Process);
-
-            // Load configuration settings
-            AppSettings.LoadAppSettings(currentDir);
-
-            // Create Cosmos Database
-            await CosmosDBUtils.CreateCrawlerDatabaseAsync(log);
-
-            // Create the Chrome driver
-            var options = new ChromeOptions()
-            {
-                AcceptInsecureCertificates = true,
-                PageLoadStrategy = PageLoadStrategy.Normal
-            };
-            options.AddArgument("headless");
-            var driver = new ChromeDriver(options);
-
-            //TO-DO add in configuration and setup client
-            //IDocumentClient client = new DocumentClient(new Uri("https://crawlerdata.documents.azure.com:443/"), "key");
-            IDatastoreProvider dbProvider = null;
-
-            //FoodPantrySiteCrawler.Test(log);
-
-            // Kick off the food pantry crawling
-            FoodPantrySiteCrawler.CrawlFoodPantryWebSiteAsync(driver, log);
-
-            // Kick off the Shelter crawling
-            try
-            {
-                ShelterCrawler.CrawlShelterWebSite(driver, dbProvider, log);
-
-            }
-            catch(Exception ex)
-            {
-                log.LogError(ex, "Exception while crawling shelters");
-            }  
-
-
-            return;
+            // TODO:  Check in the data store and then queue up each of the websites including the configuration for the site
+            crawlSiteQueue.Add(new SiteConfiguration(0, "http://foodpantries.org", "FoodPantry"));
         }
     }
 }

@@ -1,0 +1,42 @@
+{
+  "Name": "FoodPantries.org",
+  "URL": "http://foodpantries.org",
+  "SiteSelectors": [
+    {
+      "Item": "State",
+      "Type": "NameAndLinks",
+      "GroupSelector": "HTML/CSS.Table/Selector",
+      "NameSelector": "SELECTORTONAME",
+      "LinkSelector": "SELECTORTOLINK"
+    },
+    {
+      "Item": "City",
+      "Type": "NameAndLinks",
+      "GroupSelector": "HTML/CSS.Table/Selector",
+      "NameSelector": "SELECTORTONAME",
+      "LinkSelector": "SELECTORTOLINK"
+    },
+    {
+      "Item": "Details",
+      "Type": "Details",
+      "GroupSelector": "HTML/CSS.Table/Selector",
+      "Selectors": [
+        {
+          "Name": ""
+        },
+        {
+          "URL": ""
+        },
+        {
+          "Location": ""
+        },
+        {
+          "Hours": ""
+        },
+        {
+          "Notes": ""
+        }
+      ]
+    }
+  ]
+}

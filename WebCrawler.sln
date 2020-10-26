@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30204.51
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlerFunctions", "CrawlerFunctions\CrawlerFunctions.csproj", "{6FC27DD2-9371-40D4-A07A-7FDBC1B599FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerDemoWebApp", "CrawlerDemoWebApp\CrawlerDemoWebApp.csproj", "{8708B1C3-6AD5-4115-913F-BC2FB1B7D946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrawlerDemoWebApp", "CrawlerDemoWebApp\CrawlerDemoWebApp.csproj", "{8708B1C3-6AD5-4115-913F-BC2FB1B7D946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
