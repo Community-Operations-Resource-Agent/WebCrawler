@@ -31,9 +31,11 @@ namespace CrawlerFunctions
             var page = await browser.NavigateToPageAsync(new Uri(crawlConfig.URL));
 
             // Are we looking for links or details?  If we're at the last level, we are looking for details
-            if (crawlConfig.Level >= crawlConfig.Selectors.Length - 1)
+            if (crawlConfig.NextLevel >= crawlConfig.SiteSelectors.Count - 1)
             {
                 // Links:  Parse the URLs, Names and push back on to the queue
+                
+                
             }
             else
             {

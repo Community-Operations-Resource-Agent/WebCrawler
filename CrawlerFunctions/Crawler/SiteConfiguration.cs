@@ -1,18 +1,24 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CrawlerFunctions.Crawler
 {
     public class SiteConfiguration
     {
-        // 3 levels:  State, City, FoodBank - hard coding to foodpantries.org for now
-        public string[] Selectors = new string[] { "StateSelector", "City Selector", "FoodPantry Selector" };
+        /// <summary>
+        /// The next parsing level of the site
+        /// </summary>
+        public int NextLevel { get; set; }
 
         /// <summary>
-        /// The level of the site that we're on
+        /// The name of the website (organization, nonprofit, church, etc)
         /// </summary>
-        public int Level { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The URL to crawl
@@ -24,11 +30,20 @@ namespace CrawlerFunctions.Crawler
         /// </summary>
         public string Category { get; set; }
 
-        public SiteConfiguration(int level, string url, string category)
+        public List<SiteSelector> SiteSelectors { get; set; }
+
+        public SiteConfiguration()
         {
-            Level = level;
-            URL = url;
-            Category = category;
         }
+    }
+
+    public class SiteSelector
+    {
+        public int Level { get; set; }
+        public string Type { get; set; }
+        public string GroupSelector { get; set; }
+        public string NameProperty { get; set; }
+        public string NamePropertyTextRemove { get; set; }
+        public string LinkProperty { get; set; }
     }
 }

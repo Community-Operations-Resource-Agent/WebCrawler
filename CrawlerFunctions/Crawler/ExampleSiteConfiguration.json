@@ -1,22 +1,27 @@
 {
   "Name": "FoodPantries.org",
   "URL": "http://foodpantries.org",
+  "Category":  "Food Pantry",
   "SiteSelectors": [
     {
-      "Item": "State",
+      "Level": 1,
+      "Item": "States",
       "Type": "NameAndLinks",
-      "GroupSelector": "HTML/CSS.Table/Selector",
-      "NameSelector": "SELECTORTONAME",
-      "LinkSelector": "SELECTORTOLINK"
+      "GroupSelector": "//table/tbody/tr/td/a",
+      "NameProperty": "title",
+      "NamePropertyTextRemove": " Food Pantries",
+      "LinkProperty": "href"
     },
     {
-      "Item": "City",
+      "Level": 2,
+      "Item": "Cities",
       "Type": "NameAndLinks",
-      "GroupSelector": "HTML/CSS.Table/Selector",
-      "NameSelector": "SELECTORTONAME",
-      "LinkSelector": "SELECTORTOLINK"
+      "GroupSelector": "//table/tbody/tr/td/a",
+      "NameProperty": "title",
+      "LinkProperty": "href"
     },
     {
+      "Level": 3,
       "Item": "Details",
       "Type": "Details",
       "GroupSelector": "HTML/CSS.Table/Selector",
