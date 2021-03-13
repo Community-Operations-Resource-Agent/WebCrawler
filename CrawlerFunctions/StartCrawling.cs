@@ -27,6 +27,10 @@ namespace CrawlerFunctions
             string jsonConfiguration = File.ReadAllText("./Crawler/ExampleSiteConfiguration.json");
             var site = JsonConvert.DeserializeObject<SiteConfiguration>(jsonConfiguration);
 
+            // We start crawling at the top!
+            site.PageUrl = site.SiteUrl;
+            site.NextLevel = 1;
+
             crawlSiteQueue.Add(site);
         }
     }

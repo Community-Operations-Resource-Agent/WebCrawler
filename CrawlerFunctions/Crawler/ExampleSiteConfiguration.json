@@ -1,6 +1,6 @@
 {
   "Name": "FoodPantries.org",
-  "URL": "http://foodpantries.org",
+  "SiteUrl": "http://foodpantries.org",
   "Category":  "Food Pantry",
   "SiteSelectors": [
     {
