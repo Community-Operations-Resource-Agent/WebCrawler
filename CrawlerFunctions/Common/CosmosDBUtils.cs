@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.WebJobs.Logging;
 using Microsoft.Extensions.Logging;
 using System.Net;

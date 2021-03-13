@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 
