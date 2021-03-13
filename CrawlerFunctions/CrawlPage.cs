@@ -16,15 +16,15 @@ namespace CrawlerFunctions
     {
         private readonly ScrapingBrowser browser;
 
-        private readonly IServiceBusProvider _serviceBusProvider;
+        //  private readonly IServiceBusProvider _serviceBusProvider;
 
-        private readonly IDatastoreProvider _datastoreProvider;
+        // private readonly IDatastoreProvider _datastoreProvider;
 
-        public CrawlPage(ScrapingBrowser b, IServiceBusProvider serviceBusProvider, IDatastoreProvider datastoreProvider)
+        public CrawlPage(ScrapingBrowser b)
         {
             browser = b;
-            this._serviceBusProvider = serviceBusProvider;
-            this._datastoreProvider = datastoreProvider;
+            // this._serviceBusProvider = serviceBusProvider;
+            // this._datastoreProvider = datastoreProvider;
         }
 
         [FunctionName("CrawlPage")]

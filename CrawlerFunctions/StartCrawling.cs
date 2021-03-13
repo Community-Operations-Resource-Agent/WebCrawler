@@ -24,7 +24,7 @@ namespace CrawlerFunctions
 
             // TODO:  Check in the data store and then queue up each of the websites including the configuration for the site
             // We would pull this in from Cosmos, but for now we're just pulling from a local JSON file
-            string jsonConfiguration = File.ReadAllText("./ExampleSiteConfiguration.json");
+            string jsonConfiguration = File.ReadAllText("./Crawler/ExampleSiteConfiguration.json");
             var site = JsonConvert.DeserializeObject<SiteConfiguration>(jsonConfiguration);
 
             crawlSiteQueue.Add(site);
