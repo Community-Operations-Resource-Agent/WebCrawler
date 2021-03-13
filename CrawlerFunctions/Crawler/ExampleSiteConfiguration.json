@@ -27,7 +27,7 @@
       "GroupSelector": "HTML/CSS.Table/Selector",
       "Selectors": [
         {
-          "Name": ""
+          "Name": "/html[1]/body[1]/div[1]/div[4]/div[1]/div[1]/div[1]/ul[1]/h2[1]/a[1]"
         },
         {
           "URL": ""

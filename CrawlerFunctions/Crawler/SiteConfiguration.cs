@@ -12,6 +12,7 @@ namespace CrawlerFunctions.Crawler
     {
         /// <summary>
         /// The next parsing level of the site
+        /// TODO: Ask questions about what this is?
         /// </summary>
         public int NextLevel { get; set; }
 
@@ -35,6 +36,11 @@ namespace CrawlerFunctions.Crawler
         public SiteConfiguration()
         {
         }
+
+        public override String ToString()
+        {
+            return Name + " " + URL + " " + Category + " " + NextLevel;
+        }
     }
 
     public class SiteSelector
@@ -45,5 +51,10 @@ namespace CrawlerFunctions.Crawler
         public string NameProperty { get; set; }
         public string NamePropertyTextRemove { get; set; }
         public string LinkProperty { get; set; }
+
+        public override String ToString()
+        {
+            return Level + " " + Type + " " + GroupSelector + " " + NameProperty + " " + NamePropertyTextRemove + " " + LinkProperty;
+        }
     }
 }
