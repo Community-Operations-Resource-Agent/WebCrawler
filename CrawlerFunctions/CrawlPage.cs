@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CrawlerFunctions.Common;
 using CrawlerFunctions.Crawler;
@@ -33,46 +34,49 @@ namespace CrawlerFunctions
             [Queue("Crawl-Site"), StorageAccount("AzureWebJobsStorage")] ICollector<SiteConfiguration> crawlSiteQueue,
             ILogger log)
         {
-            log.LogInformation($"Crawl Page started for URL {crawlConfig.URL} at {DateTime.Now}");
+            log.LogInformation($"Crawl Page started for URL {crawlConfig.PageUrl} at {DateTime.Now}");
 
             // Get the page
-            var page = await browser.NavigateToPageAsync(new Uri(crawlConfig.URL));
+            var page = await browser.NavigateToPageAsync(new Uri(crawlConfig.PageUrl));
 
-            //for (var i = 0; i < crawlConfig.SiteSelectors.Count; i++)
-            //{
-            //    var nextPageLink = page.Html.SelectNodes(crawlConfig.SiteSelectors[0].GroupSelector);
-            //    if (i == 0)
-            //    {
-            //        for (int j = 0; j < nextPageLink.Count; j++)
-            //        {
-
-            //        }
-            //    }
-            //}
-
-            // Are we looking for links or details?  If we're at the last level, we are looking for details
-            if (crawlConfig.NextLevel >= crawlConfig.SiteSelectors.Count - 1)
+            // What Type? Current Level => look at the site config, determine type
+            SiteSelector currentSelector = crawlConfig.SiteSelectors[crawlConfig.NextLevel];
+            if (currentSelector.Type == "NameAndLinks")
             {
-                // Links:  Parse the URLs, Names and push back on to the queue
-                // scrappy sharp selectors stuff
-                //_serviceBusProvider.SendMessageAsync(CrawlerUtils.CreateMessage());
-                log.LogInformation(crawlConfig.ToString() + " if");
-            }
-            else
-            {
-                // If we're not at the last level, we're looking for names & links
-                // Gather all the data and push into Cosmos DB
-                //_datastoreProvider.InsertDocumentAsync(document);
-                log.LogInformation(crawlConfig.ToString() + " else");
-                log.LogInformation(crawlConfig.SiteSelectors[0].ToString() + " else");
+                // Get the selector and select out elements from the page
+                var selectedItems = page.Html.SelectNodes(currentSelector.GroupSelector);
+                foreach (var item in selectedItems)
+                {
+                    // Lift out name
+                    // Lift out link
+                    var parsedLink = item.Attributes["href"].Value; //lifted link
 
-                var nextPageLink = page.Html.SelectNodes(crawlConfig.SiteSelectors[0].GroupSelector);
-                
+                    var parsedName = item.Attributes["title"].Value;
+
+
+                    var nextConfig = crawlConfig.CreateNext(parsedName, parsedLink);
+                    crawlSiteQueue.Add(nextConfig);
+
+                    #if DEBUG
+                        break;
+                    #endif
+                }
             }
 
-
-            // In the end, we push back on to the same queue if we have another 'level' in the crawler to go
-
+            if (currentSelector.Type == "Details")
+            {
+                // Use selectors to get info from page
+                // Display to the console
+                var selectedItems = page.Html.SelectNodes(currentSelector.GroupSelector);
+                foreach (var item in selectedItems)
+                {
+                    var name = "";
+                    var url = "";
+                    var location = "";
+                    var hours = "";
+                    var notes = "";
+                }
+            }
         }
     }
 }
